@@ -1,0 +1,20 @@
+body{
+    min-width:900px;
+}
+
+#myCanvas {
+position:absolute;
+    z-index:-1;
+}
+
+.square {
+
+    float:left;
+    z-index:99;
+
+}
+
+#square4, square7{
+    clear:left;
+}
+
