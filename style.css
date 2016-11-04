@@ -14,7 +14,7 @@ position:absolute;
 
 }
 
-#square4, square7{
-    clear:left;
+#square4, #square7{
+    clear:both;
 }
 
