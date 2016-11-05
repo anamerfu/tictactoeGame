@@ -72,26 +72,21 @@ window.onload = function() {
 
                 if (contextes[i]) {
                     
-                    squares[i].addEventListener("click", function() {userClicked(contextes[event.target.id.split("e").pop()])} );
+                    squares[i].addEventListener("click", function() {userTurn(contextes[event.target.id.split("e").pop()])} );
                     
                 } 
             } 
         }
 
+    
 
-    function userClicked(currContext){
-        console.log(currContext);
-        currContext.clearRect(0,0,300,300);
-        if(turn=="x"){
-            turn ="y";
-        } else {
-            turn = "x";    
-        };
+    function userTurn(currContext){
             currContext.strokeStyle="#000";
             currContext.lineWidth = 20;
             currContext.lineCap = "round";
 
         if(currContext.filledBy==undefined && turn=="x"){
+            currContext.clearRect(0,0,300,300);
             currContext.beginPath();
             currContext.moveTo(50, 50);
             currContext.lineTo(250, 250);
@@ -103,18 +98,20 @@ window.onload = function() {
             currContext.stroke(); 
             currContext.filledBy=turn;
             console.log(currContext.filledBy);
+            turn="y";
         } else if (currContext.filledBy==undefined) {
+            currContext.clearRect(0,0,300,300);
             currContext.beginPath();
             currContext.arc(150,150,110,0,2*Math.PI);
             currContext.stroke();
             currContext.filledBy=turn;
             console.log(currContext.filledBy);
+            turn="x"
 
         } else {
             alert("this square has already been chosen!");
         } 
     }
-
-
-}
-            
+    
+    
+    
