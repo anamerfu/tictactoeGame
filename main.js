@@ -65,7 +65,6 @@ window.onload = function() {
     makeVariables();
 
 
-
     for (i = 1; i < 10; i++) { 
             if(squares[i] && squares[i].getContext ) {  
 
@@ -78,6 +77,18 @@ window.onload = function() {
             } 
         }
 
+    var emptyContextes = [];
+    
+    function getEmptyContextes() {
+        for(i=1; i<10; i++) {
+            if (contextes[i].filledBy == undefined) {
+                emptyContextes.push(contextes[i]);    
+            }
+            
+        }
+        console.log(emptyContextes);
+    
+    }  
     
 
   /*  function userTurn(currContext){
