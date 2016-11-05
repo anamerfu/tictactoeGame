@@ -3,7 +3,7 @@ window.onload = function() {
     var theCanvas = document.getElementById("myCanvas");
     var ctx = theCanvas.getContext("2d");
     var squares=[];
-    var contextes = [];
+    var contexts = [];
     var turn  = "x";
     /*        var squaresFilled = {
             s1: false,
@@ -54,8 +54,8 @@ window.onload = function() {
     function makeVariables (){
         for (i = 1; i < 10; i++) {
             squares[i] = document.getElementById( "square" +i );
-            contextes[i]= squares[i].getContext("2d");
-            contextes[i].filledBy = undefined;
+            contexts[i]= squares[i].getContext("2d");
+            contexts[i].filledBy = undefined;
 
         } 
         
@@ -69,60 +69,15 @@ window.onload = function() {
             if(squares[i] && squares[i].getContext ) {  
 
 
-                if (contextes[i]) {
+                if (contexts[i]) {
                     
-                    squares[i].addEventListener("click", function() {userTurn(contextes[event.target.id.split("e").pop()])} );
+                    squares[i].addEventListener("click", function() {userTurn(contexts[event.target.id.split("e").pop()])} );
                     
                 } 
             } 
         }
 
-    var emptyContextes = [];
-    
-    function getEmptyContextes() {
-        for(i=1; i<10; i++) {
-            if (contextes[i].filledBy == undefined) {
-                emptyContextes.push(contextes[i]);    
-            }
-            
-        }
-        console.log(emptyContextes);
-    
-    }  
-    
 
-  /*  function userTurn(currContext){
-            currContext.strokeStyle="#000";
-            currContext.lineWidth = 20;
-            currContext.lineCap = "round";
-        if(currContext.filledBy==undefined && turn=="x"){
-            currContext.clearRect(0,0,300,300);
-            currContext.beginPath();
-            currContext.moveTo(50, 50);
-            currContext.lineTo(250, 250);
-            currContext.stroke();
-
-            currContext.beginPath();
-            currContext.moveTo(250, 50);
-            currContext.lineTo(50, 250);
-            currContext.stroke(); 
-            currContext.filledBy=turn;
-            console.log(currContext.filledBy);
-            turn="y";
-        } else if (currContext.filledBy==undefined) {
-            currContext.clearRect(0,0,300,300);
-            currContext.beginPath();
-            currContext.arc(150,150,110,0,2*Math.PI);
-            currContext.stroke();
-            currContext.filledBy=turn;
-            console.log(currContext.filledBy);
-            turn="x"
-
-        } else {
-            alert("this square has already been chosen!");
-        } 
-    } */
-    
     
     function userTurn(currContext){
         if (currContext.filledBy !== undefined) {
@@ -143,15 +98,28 @@ window.onload = function() {
             currContext.filledBy=turn;
             console.log(currContext.filledBy);
             turn="y";
-            computerTurn(5);
+            computerTurn();
         } else  {
             alert("not your turn!");
   
         }
     }
     
-    function computerTurn(compContext){
-        var currContext = contextes[compContext];
+
+    function computerTurn(){
+            var emptyContexts=[];
+            for(i=1; i<10; i++) {
+                if (contexts[i].filledBy == undefined) {
+                emptyContexts.push(contexts[i]);  
+                }
+                    
+            }
+             
+      
+        var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
+        console.log(currContext);
+
+        
         if (currContext.filledBy !== undefined) {
             alert("O-this square has already been chosen!")   
         } else if (turn =="y"){
@@ -168,7 +136,7 @@ window.onload = function() {
         } else {
             alert("not your turn!");
   
-        }
+        }   
     
     }
 
