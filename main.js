@@ -80,11 +80,10 @@ window.onload = function() {
 
     
 
-    function userTurn(currContext){
+  /*  function userTurn(currContext){
             currContext.strokeStyle="#000";
             currContext.lineWidth = 20;
             currContext.lineCap = "round";
-
         if(currContext.filledBy==undefined && turn=="x"){
             currContext.clearRect(0,0,300,300);
             currContext.beginPath();
@@ -111,7 +110,40 @@ window.onload = function() {
         } else {
             alert("this square has already been chosen!");
         } 
+    } */
+    
+    
+    function userTurn(currContext){
+        if (currContext.fillBy !== undefined) {
+            alert("this square has already been chosen!")   
+        } else if (turn =="x"){
+            currContext.strokeStyle="#000";
+            currContext.lineWidth = 20;
+            currContext.lineCap = "round";
+            currContext.clearRect(0,0,300,300);
+            currContext.beginPath();
+            currContext.moveTo(50, 50);
+            currContext.lineTo(250, 250);
+            currContext.stroke();
+            currContext.beginPath();
+            currContext.moveTo(250, 50);
+            currContext.lineTo(50, 250);
+            currContext.stroke(); 
+            currContext.filledBy=turn;
+            console.log(currContext.filledBy);
+            turn="y";
+        } else {
+            alert("not your turn!");
+  
+        }
     }
+
+    
+    
+    
+    
+    
+}
     
     
     
