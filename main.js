@@ -114,8 +114,8 @@ window.onload = function() {
     
     
     function userTurn(currContext){
-        if (currContext.fillBy !== undefined) {
-            alert("this square has already been chosen!")   
+        if (currContext.filledBy !== undefined) {
+            alert("X-this square has already been chosen!")   
         } else if (turn =="x"){
             currContext.strokeStyle="#000";
             currContext.lineWidth = 20;
@@ -132,10 +132,33 @@ window.onload = function() {
             currContext.filledBy=turn;
             console.log(currContext.filledBy);
             turn="y";
+            computerTurn(5);
+        } else  {
+            alert("not your turn!");
+  
+        }
+    }
+    
+    function computerTurn(compContext){
+        var currContext = contextes[compContext];
+        if (currContext.filledBy !== undefined) {
+            alert("O-this square has already been chosen!")   
+        } else if (turn =="y"){
+            currContext.strokeStyle="#000";
+            currContext.lineWidth = 20;
+            currContext.lineCap = "round";
+            currContext.clearRect(0,0,300,300);
+            currContext.beginPath();
+            currContext.arc(150,150,110,0,2*Math.PI);
+            currContext.stroke();
+            currContext.filledBy=turn;
+            console.log(currContext.filledBy);
+            turn="x"
         } else {
             alert("not your turn!");
   
         }
+    
     }
 
     
