@@ -5,7 +5,7 @@ window.onload = function() {
     var squares=[];
     var contexts = [];
     var turn  = "x";
-    var level = "easy"
+    var level = "medium"
 
 
     //creates grid
@@ -116,6 +116,8 @@ window.onload = function() {
     }
     
     function computerTurn(){
+                
+        var possibleWin=false;
         var emptyContexts=[];
         var rows= [
            [contexts[1],contexts[2],contexts[3]],
@@ -126,7 +128,22 @@ window.onload = function() {
            [contexts[3],contexts[6],contexts[9]],
            [contexts[1],contexts[5],contexts[9]],
            [contexts[3],contexts[5],contexts[7]]
-        ]; 
+        ];
+        
+        function checkForPossibleWin (s1, s2, s3, currTurn){
+            if(turn==="y"){
+                if (s1.filledBy  === currTurn && s2.filledBy === currTurn && s3.filledBy === undefined) {
+                    makeCircle(s3);
+                    turn="x";
+                } else if (s2.filledBy === currTurn && s3.filledBy === currTurn && s1.filledBy === undefined) {
+                    makeCircle(s1);
+                    turn="x";
+                } else if (s1.filledBy === currTurn && s3.filledBy === currTurn && s2.filledBy ===undefined ) {
+                    makeCircle(s2);
+                    turn="x";
+                }
+            }
+        }
         
 
         if(level==="easy") {
@@ -155,47 +172,47 @@ window.onload = function() {
             }   
         }
         
-    function medium (){
-        
-        var possibleWin=false;
+        function medium (){
+            for (i=0; i<8; i++){
+                checkForPossibleWin(...rows[i],"y");
+            }
+            if (turn==="y"){
+                for (i=0; i<8; i++){
+                    checkForPossibleWin(...rows[i],"x");
+                }
 
+            }
+
+            if (turn==="y"){
+                easy();
+                turn="x";
+            }
+
+            turn="x";
+
+        }
         
-        function checkForWin (s1, s2, s3, currTurn){
-            if(possibleWin===false){
-                if (s1.filledBy  === currTurn && s2.filledBy === currTurn && s3.filledBy === undefined) {
-                    makeCircle(s3);
-                    possibleWin = true;
-                } else if (s2.filledBy === currTurn && s3.filledBy === currTurn && s1.filledBy === undefined) {
-                    makeCircle(s1);
-                    possibleWin = true;
-                } else if (s1.filledBy === currTurn && s3.filledBy === currTurn && s2.filledBy ===undefined ) {
-                    makeCircle(s2);
-                    possibleWin = true;
+        function hard(){
+            for (i=0; i<8; i++){
+                checkForPossibleWin(...rows[i],"y");
+            }
+            if (possibleWin===false){
+                for (i=0; i<8; i++){
+                    checkForPossibleWin(...rows[i],"x");
+                }
+
+            }
+            
+            if (turn="y") {
+                if (contexts[5].filledBy===undefined){
+                    makecircle(contexts[5]);
                 }
             }
-        }
- 
-        for (i=0; i<8; i++){
-            checkForWin(...rows[i],"y");
-        }
-
-        
-        
-        if (possibleWin===false){
-            for (i=0; i<8; i++){
-                checkForWin(...rows[i],"x");
-            }
-
+            
+            
         }
         
-        if (possibleWin==false){
-            easy();
-            possibleWin=false;
-        }
         
-        turn="x";
-
-    }
     }
 
     
