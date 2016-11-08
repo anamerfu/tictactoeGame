@@ -96,16 +96,27 @@ window.onload = function() {
             currContext.lineTo(50, 250);
             currContext.stroke(); 
             currContext.filledBy=turn;
-            console.log(currContext.filledBy);
             turn="y";
-            computerTurn();
+            computerTurnMedium();
         } else  {
             alert("not your turn!");
   
         }
     }
     
-
+function makeCircle(ctx){
+            ctx.strokeStyle="#000";
+            ctx.lineWidth = 20;
+            ctx.lineCap = "round";
+            ctx.clearRect(0,0,300,300);
+            ctx.beginPath();
+            ctx.arc(150,150,110,0,2*Math.PI);
+            ctx.stroke();
+            ctx.filledBy=turn;
+            console.log(ctx.filledBy);
+            turn="x"
+    
+}
     function computerTurn(){
             var emptyContexts=[];
             for(i=1; i<10; i++) {
@@ -117,22 +128,12 @@ window.onload = function() {
              
       
         var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
-        console.log(currContext);
 
         
         if (currContext.filledBy !== undefined) {
             alert("O-this square has already been chosen!")   
         } else if (turn =="y"){
-            currContext.strokeStyle="#000";
-            currContext.lineWidth = 20;
-            currContext.lineCap = "round";
-            currContext.clearRect(0,0,300,300);
-            currContext.beginPath();
-            currContext.arc(150,150,110,0,2*Math.PI);
-            currContext.stroke();
-            currContext.filledBy=turn;
-            console.log(currContext.filledBy);
-            turn="x"
+            makeCircle(currContext);
         } else {
             alert("not your turn!");
   
@@ -142,6 +143,68 @@ window.onload = function() {
 
     
     
+    
+
+    
+
+
+    function computerTurnMedium (){
+        
+        var possibleWin=false;
+        
+        var rows= [
+           [contexts[1],contexts[2],contexts[3]],
+           [contexts[4],contexts[5],contexts[6]],
+           [contexts[7],contexts[8],contexts[9]],
+           [contexts[1],contexts[4],contexts[7]],
+           [contexts[2],contexts[5],contexts[8]],
+           [contexts[3],contexts[6],contexts[9]],
+           [contexts[1],contexts[5],contexts[9]],
+           [contexts[3],contexts[5],contexts[7]]
+        ]; 
+        
+        function checkForWin (s1, s2, s3, currTurn){
+                if (s1.filledBy  == currTurn && s2.filledBy == currTurn && s3.filledBy == undefined) {
+                    makeCircle(s3);
+                    possibleWin =true;
+                } else if (s2.filledBy == currTurn && s3.filledBy == currTurn && s1.filledBy === undefined) {
+                    makeCircle(s1);
+                    possibleWin =true;
+                } else if (s1.filledBy == currTurn && s3.filledBy == currTurn && s2.filledBy ===undefined ) {
+                    makeCircle(s2);
+                    possibleWin =true;
+                }
+            }
+ 
+        var emptyContexts = [];
+        checkForWin(...rows[0],"y");
+        checkForWin(...rows[1],"y");
+        checkForWin(...rows[2],"y");
+        checkForWin(...rows[3],"y");
+        checkForWin(...rows[4],"y");
+        checkForWin(...rows[5],"y");
+        checkForWin(...rows[6],"y");
+        checkForWin(...rows[7],"y");
+        
+        if (possibleWin==false){
+        checkForWin(...rows[0],"x");
+        checkForWin(...rows[1],"x");
+        checkForWin(...rows[2],"x");
+        checkForWin(...rows[3],"x");
+        checkForWin(...rows[4],"x");
+        checkForWin(...rows[5],"x");
+        checkForWin(...rows[6],"x");
+        checkForWin(...rows[7],"x");
+        }
+        
+        if (possibleWin==false){
+            computerTurn();
+            possibleWin=false;
+        };
+        
+        turn="x";
+        console.log(turn);
+    }
     
     
     
