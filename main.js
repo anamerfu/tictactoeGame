@@ -5,20 +5,10 @@ window.onload = function() {
     var squares=[];
     var contexts = [];
     var turn  = "x";
-    /*        var squaresFilled = {
-            s1: false,
-            s2: false,
-            s3: false,
-            s4: false,
-            s5: false,
-            s6: false,
-            s7: false,
-            s8: false,
-            s9: false
-    }; */
+    var level = "easy"
 
 
-
+    //creates grid
     if(theCanvas && theCanvas.getContext ) {
 
         if (ctx) {
@@ -50,7 +40,8 @@ window.onload = function() {
 
           }
     }
-
+    
+    //gets all canvas ids and creates 9 contexts
     function makeVariables (){
         for (i = 1; i < 10; i++) {
             squares[i] = document.getElementById( "square" +i );
@@ -61,11 +52,11 @@ window.onload = function() {
         
 
     }
-
     makeVariables();
 
-
-    for (i = 1; i < 10; i++) { 
+    //checks if all contexts are there - onclick event for user turn for all 9
+    function checkContexts (){
+        for (i = 1; i < 10; i++) { 
             if(squares[i] && squares[i].getContext ) {  
 
 
@@ -76,9 +67,29 @@ window.onload = function() {
                 } 
             } 
         }
+    }
+    checkContexts();
 
-
+    //creates circle for computer turn, switches current turn
+    function makeCircle(ctx){
+            ctx.strokeStyle="#000";
+            ctx.lineWidth = 20;
+            ctx.lineCap = "round";
+            ctx.clearRect(0,0,300,300);
+            ctx.beginPath();
+            ctx.arc(150,150,110,0,2*Math.PI);
+            ctx.stroke();
+            ctx.filledBy=turn;
+            console.log(ctx.filledBy);
+            turn="x"
     
+    }
+
+    /* user turn
+    1. checks if contexts clicked is already chosen - if it is empty it is undefined, if not they cannot choose it
+    2.checks if it's users turn (there's a delay for the computer function), if it - draw x, if not, alert that it's not their turn yet
+    3. switches current turn
+    */
     function userTurn(currContext){
         if (currContext.filledBy !== undefined) {
             alert("X-this square has already been chosen!")   
@@ -97,61 +108,15 @@ window.onload = function() {
             currContext.stroke(); 
             currContext.filledBy=turn;
             turn="y";
-            setTimeout(computerTurnMedium,500);
+            setTimeout(computerTurn,500);
         } else  {
             alert("not your turn!");
   
         }
     }
     
-function makeCircle(ctx){
-            ctx.strokeStyle="#000";
-            ctx.lineWidth = 20;
-            ctx.lineCap = "round";
-            ctx.clearRect(0,0,300,300);
-            ctx.beginPath();
-            ctx.arc(150,150,110,0,2*Math.PI);
-            ctx.stroke();
-            ctx.filledBy=turn;
-            console.log(ctx.filledBy);
-            turn="x"
-    
-}
     function computerTurn(){
         var emptyContexts=[];
-        for(i=1; i<10; i++) {
-            if (contexts[i].filledBy == undefined) {
-            emptyContexts.push(contexts[i]);  
-                }
-                    
-        }
-             
-      
-        var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
-
-        
-        if (currContext.filledBy !== undefined) {
-            alert("O-this square has already been chosen!")   
-        } else if (turn =="y"){
-            makeCircle(currContext);
-        } else {
-            alert("not your turn!");
-  
-        }   
-    
-    }
-
-    
-    
-    
-
-    
-
-
-    function computerTurnMedium (){
-        
-        var possibleWin=false;
-        var emptyContexts = [];
         var rows= [
            [contexts[1],contexts[2],contexts[3]],
            [contexts[4],contexts[5],contexts[6]],
@@ -162,6 +127,38 @@ function makeCircle(ctx){
            [contexts[1],contexts[5],contexts[9]],
            [contexts[3],contexts[5],contexts[7]]
         ]; 
+        
+
+        if(level==="easy") {
+            easy();
+        } else {
+            medium();
+        }
+             
+        function easy (){
+            for(i=1; i<10; i++) {
+                if (contexts[i].filledBy == undefined) {
+                emptyContexts.push(contexts[i]);  
+                }          
+            }
+        
+            var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
+
+
+            if (currContext.filledBy !== undefined) {
+                alert("O-this square has already been chosen!")   
+            } else if (turn =="y"){
+                makeCircle(currContext);
+            } else {
+                alert("not your turn!");
+
+            }   
+        }
+        
+    function medium (){
+        
+        var possibleWin=false;
+
         
         function checkForWin (s1, s2, s3, currTurn){
             if(possibleWin===false){
@@ -192,15 +189,23 @@ function makeCircle(ctx){
         }
         
         if (possibleWin==false){
-            computerTurn();
+            easy();
             possibleWin=false;
         }
         
         turn="x";
 
     }
+    }
+
     
     
+    
+
+    
+
+
+ 
     
 }
     
