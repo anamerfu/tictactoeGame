@@ -97,7 +97,7 @@ window.onload = function() {
             currContext.stroke(); 
             currContext.filledBy=turn;
             turn="y";
-            computerTurnMedium();
+            setTimeout(computerTurnMedium,500);
         } else  {
             alert("not your turn!");
   
@@ -151,7 +151,7 @@ function makeCircle(ctx){
     function computerTurnMedium (){
         
         var possibleWin=false;
-        
+        var emptyContexts = [];
         var rows= [
            [contexts[1],contexts[2],contexts[3]],
            [contexts[4],contexts[5],contexts[6]],
@@ -164,19 +164,21 @@ function makeCircle(ctx){
         ]; 
         
         function checkForWin (s1, s2, s3, currTurn){
-                if (s1.filledBy  == currTurn && s2.filledBy == currTurn && s3.filledBy == undefined) {
+            if(possibleWin===false){
+                if (s1.filledBy  === currTurn && s2.filledBy === currTurn && s3.filledBy === undefined) {
                     makeCircle(s3);
-                    possibleWin =true;
-                } else if (s2.filledBy == currTurn && s3.filledBy == currTurn && s1.filledBy === undefined) {
+                    possibleWin = true;
+                } else if (s2.filledBy === currTurn && s3.filledBy === currTurn && s1.filledBy === undefined) {
                     makeCircle(s1);
-                    possibleWin =true;
-                } else if (s1.filledBy == currTurn && s3.filledBy == currTurn && s2.filledBy ===undefined ) {
+                    possibleWin = true;
+                } else if (s1.filledBy === currTurn && s3.filledBy === currTurn && s2.filledBy ===undefined ) {
                     makeCircle(s2);
-                    possibleWin =true;
+                    possibleWin = true;
                 }
             }
+        }
  
-        var emptyContexts = [];
+
         checkForWin(...rows[0],"y");
         checkForWin(...rows[1],"y");
         checkForWin(...rows[2],"y");
@@ -186,22 +188,21 @@ function makeCircle(ctx){
         checkForWin(...rows[6],"y");
         checkForWin(...rows[7],"y");
         
-        if (possibleWin==false){
-        checkForWin(...rows[0],"x");
-        checkForWin(...rows[1],"x");
-        checkForWin(...rows[2],"x");
-        checkForWin(...rows[3],"x");
-        checkForWin(...rows[4],"x");
-        checkForWin(...rows[5],"x");
-        checkForWin(...rows[6],"x");
-        checkForWin(...rows[7],"x");
+        if (possibleWin===false){
+            checkForWin(...rows[0],"x");
+            checkForWin(...rows[1],"x");
+            checkForWin(...rows[2],"x");
+            checkForWin(...rows[3],"x");
+            checkForWin(...rows[4],"x");
+            checkForWin(...rows[5],"x");
+            checkForWin(...rows[6],"x");
+            checkForWin(...rows[7],"x");
         }
         
         if (possibleWin==false){
             computerTurn();
             possibleWin=false;
         };
-        
         turn="x";
         console.log(turn);
     }
