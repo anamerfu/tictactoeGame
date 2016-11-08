@@ -118,13 +118,13 @@ function makeCircle(ctx){
     
 }
     function computerTurn(){
-            var emptyContexts=[];
-            for(i=1; i<10; i++) {
-                if (contexts[i].filledBy == undefined) {
-                emptyContexts.push(contexts[i]);  
+        var emptyContexts=[];
+        for(i=1; i<10; i++) {
+            if (contexts[i].filledBy == undefined) {
+            emptyContexts.push(contexts[i]);  
                 }
                     
-            }
+        }
              
       
         var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
@@ -178,33 +178,26 @@ function makeCircle(ctx){
             }
         }
  
+        for (i=0; i<8; i++){
+            checkForWin(...rows[i],"y");
+        }
 
-        checkForWin(...rows[0],"y");
-        checkForWin(...rows[1],"y");
-        checkForWin(...rows[2],"y");
-        checkForWin(...rows[3],"y");
-        checkForWin(...rows[4],"y");
-        checkForWin(...rows[5],"y");
-        checkForWin(...rows[6],"y");
-        checkForWin(...rows[7],"y");
+        
         
         if (possibleWin===false){
-            checkForWin(...rows[0],"x");
-            checkForWin(...rows[1],"x");
-            checkForWin(...rows[2],"x");
-            checkForWin(...rows[3],"x");
-            checkForWin(...rows[4],"x");
-            checkForWin(...rows[5],"x");
-            checkForWin(...rows[6],"x");
-            checkForWin(...rows[7],"x");
+            for (i=0; i<8; i++){
+                checkForWin(...rows[i],"x");
+            }
+
         }
         
         if (possibleWin==false){
             computerTurn();
             possibleWin=false;
-        };
+        }
+        
         turn="x";
-        console.log(turn);
+
     }
     
     
