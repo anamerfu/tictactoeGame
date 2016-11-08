@@ -5,7 +5,7 @@ window.onload = function() {
     var squares=[];
     var contexts = [];
     var turn  = "x";
-    var level = "medium"
+    var level = "hard"
 
 
     //creates grid
@@ -148,8 +148,10 @@ window.onload = function() {
 
         if(level==="easy") {
             easy();
-        } else {
+        } else if (level==="medium") {
             medium();
+        } else {
+            hard();
         }
              
         function easy (){
@@ -193,6 +195,22 @@ window.onload = function() {
         }
         
         function hard(){
+            var emptySides =[contexts[2], contexts[4], contexts[6], contexts[8]];
+            var emptyCorners =[contexts[1], contexts[3], contexts[7], contexts[9]];
+            var options =[];
+            for(i=1; i<emptySides.length; i++) {
+                if (emptySides[i].filledBy !== undefined) {
+                emptySides.splice(i,1);  
+                }          
+            }
+            console.log(emptySides);
+            for(i=1; i<emptyCorners.length; i++) {
+                if (emptyCorners[i].filledBy !== undefined) {
+                emptyCorners.splice(i,1);  
+                }          
+            }
+            console.log(emptyCorners);
+            
             for (i=0; i<8; i++){
                 checkForPossibleWin(...rows[i],"y");
             }
@@ -204,16 +222,74 @@ window.onload = function() {
             }
             
             if (turn="y") {
+                
                 if (contexts[5].filledBy===undefined){
-                    makecircle(contexts[5]);
+                    makeCircle(contexts[5]);
+                    turn="x"
+                    
+                } else if (emptyContexts ==="6" && turn==="y"){ 
+                    
+                    if ((contexts[1].filledBy === "x" && contexts[9].filledBy ==="x" && contexts[5].filledBy==="y") ||
+                    (contexts[3].filledBy === "x" && contexts[7].filledBy ==="x" && contexts[5].filledBy==="y")) {
+                        makeCircle(emptySides[Math.floor(Math.random() * emptySides.length)]);
+                        turn="x"
+                    } else if (contexts[5].filledBy === "y") {
+                        
+                        if (contexts[7].filledBy === "x" && contexts[6].filledBy ==="x"){
+                           options = contexts[8], contexts[9];
+                           makeCircle(options[Math.floor(Math.random() * options.length)]);
+                             turn="x"
+                        } else if(contexts[1].filledBy === "x" && contexts[6].filledBy ==="x") {
+                           options = contexts[2], contexts[3];
+                           makeCircle(options[Math.floor(Math.random() * options.length)]);
+                             turn="x"
+                        } else if(contexts[3].filledBy === "x" && contexts[9].filledBy) {
+                           options = contexts[7], contexts[8];
+                           makeCircle(options[Math.floor(Math.random() * options.length)]);
+                             turn="x"
+                        } else if (contexts[4].filledBy === "x" && contexts[3].filledBy ==="x"){
+                           options = contexts[1], contexts[2];
+                           makeCircle(options[Math.floor(Math.random() * options.length)]);
+                             turn="x"
+                        } else if (contexts[4].filledBy === "x" && contexts[7].filledBy ==="x"){
+                            makeCircle(contexts[7]);
+                             turn="x"
+                        } else if (contexts[6].filledBy === "x" && contexts[8].filledBy ==="x"){
+                            makeCircle(contexts[9]);
+                             turn="x"
+                        } else if (contexts[2].filledBy === "x" && contexts[4].filledBy ==="x"){
+                            makeCircle(contexts[1]);
+                             turn="x"
+                        } else if (contexts[2].filledBy === "x" && contexts[6].filledBy ==="x"){
+                            makeCircle(contexts[3]);
+                             turn="x"
+                        }
+                        turn="x"
+                    } else if (emptyCorners.length !== 0) {
+                        makeCircle(emptyCorners[Math.floor(Math.random() * emptyCorners.length)]);
+                        turn="x"
+                    } else if (emptySides.length !== 0) {
+                        makeCircle(emptySides[Math.floor(Math.random() * emptySides.length)]);
+                        turn="x"
+                    } else{
+                        alert("game over"); 
+                         turn="x"
+                    }
+                   
                 }
-            }
-            
-            
-        }
-        
-        
-    }
+
+
+                
+
+                }
+                    
+                 
+                    
+                    
+                    
+                    
+             }}
+
 
     
     
