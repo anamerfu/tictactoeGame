@@ -79,9 +79,10 @@ window.onload = function() {
             ctx.beginPath();
             ctx.arc(150,150,110,0,2*Math.PI);
             ctx.stroke();
-            ctx.filledBy=turn;
+            ctx.filledBy= turn;
             console.log(ctx.filledBy);
             turn="x"
+        
     
     }
 
@@ -93,7 +94,7 @@ window.onload = function() {
     function userTurn(currContext){
         if (currContext.filledBy !== undefined) {
             alert("X-this square has already been chosen!")   
-        } else if (turn =="x"){
+        } else if (turn==="x"){
             currContext.strokeStyle="#000";
             currContext.lineWidth = 20;
             currContext.lineCap = "round";
@@ -130,6 +131,15 @@ window.onload = function() {
            [contexts[3],contexts[5],contexts[7]]
         ];
         
+        function getEmptyContexts(){
+                for(i=1; i<10; i++) {
+                    if (contexts[i].filledBy == undefined) {
+                        emptyContexts.push(contexts[i]);  
+                }          
+            }
+        }
+        
+        
         function checkForPossibleWin (s1, s2, s3, currTurn){
             if(turn==="y"){
                 if (s1.filledBy  === currTurn && s2.filledBy === currTurn && s3.filledBy === undefined) {
@@ -155,23 +165,13 @@ window.onload = function() {
         }
              
         function easy (){
-            for(i=1; i<10; i++) {
-                if (contexts[i].filledBy == undefined) {
-                emptyContexts.push(contexts[i]);  
-                }          
-            }
-        
+            
+            getEmptyContexts();
             var currContext = emptyContexts[Math.round(Math.random()*(emptyContexts.length-1))];
 
 
-            if (currContext.filledBy !== undefined) {
-                alert("O-this square has already been chosen!")   
-            } else if (turn =="y"){
-                makeCircle(currContext);
-            } else {
-                alert("not your turn!");
-
-            }   
+            makeCircle(currContext);
+            turn="x";
         }
         
         function medium (){
@@ -195,21 +195,31 @@ window.onload = function() {
         }
         
         function hard(){
-            var emptySides =[contexts[2], contexts[4], contexts[6], contexts[8]];
-            var emptyCorners =[contexts[1], contexts[3], contexts[7], contexts[9]];
-            var options =[];
-            for(i=1; i<emptySides.length; i++) {
-                if (emptySides[i].filledBy !== undefined) {
-                emptySides.splice(i,1);  
-                }          
+            var sides =[contexts[2], contexts[4], contexts[6], contexts[8]];
+            var corners =[contexts[1], contexts[3], contexts[7], contexts[9]];
+            var emptySides =[];
+            var emptyCorners =[];
+            
+            getEmptyContexts();
+            console.log(emptyContexts.length);
+            for(i=0; i<sides.length; i++) {
+                if (sides[i].filledBy === undefined) {
+                emptySides.push(sides[i]); 
+                   
+                } 
+                
+              
             }
-            console.log(emptySides);
-            for(i=1; i<emptyCorners.length; i++) {
-                if (emptyCorners[i].filledBy !== undefined) {
-                emptyCorners.splice(i,1);  
-                }          
+            for(i=0; i<corners.length; i++) {
+                if (corners[i].filledBy === undefined) {
+                emptyCorners.push(corners[i]); 
+                console.log("working");
+                } 
+          
             }
             console.log(emptyCorners);
+            console.log(emptySides);
+            
             
             for (i=0; i<8; i++){
                 checkForPossibleWin(...rows[i],"y");
@@ -221,74 +231,90 @@ window.onload = function() {
 
             }
             
-            if (turn="y") {
+            if (turn==="y") {
                 
                 if (contexts[5].filledBy===undefined){
                     makeCircle(contexts[5]);
                     turn="x"
+                    console.log("opt 1");
                     
-                } else if (emptyContexts ==="6" && turn==="y"){ 
+                } else if (emptyContexts.length ==="6"){ 
+                    console.log("6 empties");
                     
                     if ((contexts[1].filledBy === "x" && contexts[9].filledBy ==="x" && contexts[5].filledBy==="y") ||
                     (contexts[3].filledBy === "x" && contexts[7].filledBy ==="x" && contexts[5].filledBy==="y")) {
                         makeCircle(emptySides[Math.floor(Math.random() * emptySides.length)]);
-                        turn="x"
+                        turn="x";
+                        console.log("opt 2");
+                        
                     } else if (contexts[5].filledBy === "y") {
                         
+                        
                         if (contexts[7].filledBy === "x" && contexts[6].filledBy ==="x"){
-                           options = contexts[8], contexts[9];
+                           options = [contexts[8], contexts[9]];
                            makeCircle(options[Math.floor(Math.random() * options.length)]);
-                             turn="x"
+                            turn="x";
+                            console.log("opt 3");
                         } else if(contexts[1].filledBy === "x" && contexts[6].filledBy ==="x") {
-                           options = contexts[2], contexts[3];
+                           options = [contexts[2], contexts[3]];
                            makeCircle(options[Math.floor(Math.random() * options.length)]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 4");
                         } else if(contexts[3].filledBy === "x" && contexts[9].filledBy) {
-                           options = contexts[7], contexts[8];
+                           options = [contexts[7], contexts[8]];
                            makeCircle(options[Math.floor(Math.random() * options.length)]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 5");
                         } else if (contexts[4].filledBy === "x" && contexts[3].filledBy ==="x"){
-                           options = contexts[1], contexts[2];
+                           options = [contexts[1], contexts[2]];
                            makeCircle(options[Math.floor(Math.random() * options.length)]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 6");
                         } else if (contexts[4].filledBy === "x" && contexts[7].filledBy ==="x"){
                             makeCircle(contexts[7]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 7");
                         } else if (contexts[6].filledBy === "x" && contexts[8].filledBy ==="x"){
                             makeCircle(contexts[9]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 8");
                         } else if (contexts[2].filledBy === "x" && contexts[4].filledBy ==="x"){
                             makeCircle(contexts[1]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 9");
                         } else if (contexts[2].filledBy === "x" && contexts[6].filledBy ==="x"){
                             makeCircle(contexts[3]);
-                             turn="x"
+                             turn="x";
+                            console.log("opt 10");
                         }
-                        turn="x"
-                    } else if (emptyCorners.length !== 0) {
-                        makeCircle(emptyCorners[Math.floor(Math.random() * emptyCorners.length)]);
-                        turn="x"
-                    } else if (emptySides.length !== 0) {
-                        makeCircle(emptySides[Math.floor(Math.random() * emptySides.length)]);
-                        turn="x"
-                    } else{
-                        alert("game over"); 
-                         turn="x"
+                        turn="x";
                     }
+            } else if (emptyCorners.length !== 0) {
+                        makeCircle(emptyCorners[Math.floor(Math.random() * emptyCorners.length)]);
+                        turn="x";
+                        console.log("opt 11");
+            } else if (emptySides.length !== 0) {
+                        makeCircle(emptySides[Math.floor(Math.random() * emptySides.length)]);
+                        turn="x";
+                console.log("opt 12");
+            } else{
+                        alert("game over"); 
+                         turn="x";
+                
+            }
+            turn="x";
                    
-                }
+            }
 
 
                 
 
                 }
                     
-                 
                     
                     
                     
-                    
-             }}
+             }
 
 
     
