@@ -5,11 +5,28 @@ window.onload = function() {
     var squares=[];
     var contexts = [];
     var turn  = "x";
-    var level = "hard"
+    var level;
+    var winner = "false";
+    
+    var easyButton = document.getElementById("easy");
+    var mediumButton = document.getElementById("medium");
+    var hardButton = document.getElementById("hard");
+    
+    
+    function levelSelect (levelSelected){
+        level = levelSelected;
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("options").innerHTML = levelSelected;
+        console.log("function played");
+    }
+    
+    easyButton.addEventListener("click", function() {levelSelect("easy")});
+    mediumButton.addEventListener("click", function() {levelSelect("medium")});
+    hardButton.addEventListener("click", function() {levelSelect("hard")});
+    
     
 
-
-
+    
     //creates grid
     if(theCanvas && theCanvas.getContext ) {
 
@@ -83,13 +100,15 @@ window.onload = function() {
            [contexts[3],contexts[5],contexts[7]]
         ];
 
-    
+    //checks all rows for a win
     function checkForWin() {
         function check(ctx1, ctx2, ctx3){
             if(ctx1.filledBy ==="x" && ctx2.filledBy === ctx3.filledBy & ctx2.filledBy === ctx1.filledBy){
                 alert("You win!");
+                setTimeout(location.reload(), 500);
             } else if (ctx1.filledBy === "y" && ctx2.filledBy === ctx3.filledBy & ctx2.filledBy===ctx1.filledBy){
                 alert("You lose!");
+                setTimeout(location.reload(), 500);
             }
         }
             for (i=0; i<rows.length; i++){
@@ -150,10 +169,10 @@ window.onload = function() {
     
     function computerTurn(){
                 
-        var possibleWin=false;
+
         var emptyContexts=[];
 
-        
+        //makes an array of currently empty squares
         function getEmptyContexts(){
                 for(i=1; i<10; i++) {
                     if (contexts[i].filledBy == undefined) {
@@ -163,7 +182,7 @@ window.onload = function() {
         }
         
 
-        
+        //checks potention wins 
         function checkForPossibleWin (s1, s2, s3, currTurn){
             if(turn==="y"){
                 if (s1.filledBy  === currTurn && s2.filledBy === currTurn && s3.filledBy === undefined) {
@@ -184,7 +203,7 @@ window.onload = function() {
             
         }
         
-
+        //checks what level player selected
         if(level==="easy") {
             easy();
         } else if (level==="medium") {
@@ -192,7 +211,8 @@ window.onload = function() {
         } else {
             hard();
         }
-             
+        
+        //easy - picks random square
         function easy (){
             
             getEmptyContexts();
@@ -202,6 +222,7 @@ window.onload = function() {
             turn="x";
         }
         
+        //medium, blocks possible wins and will win if sees two in a row
         function medium (){
             for (i=0; i<8; i++){
                 checkForPossibleWin(...rows[i],"y");
@@ -221,6 +242,7 @@ window.onload = function() {
             turn="x";
 
         }
+        
         
         function hard(){
             var sides =[contexts[2], contexts[4], contexts[6], contexts[8]];
@@ -261,7 +283,7 @@ window.onload = function() {
             }
             
             //checks for possible wins on user side
-            if (possibleWin===false){
+            if (turn==="y"){
                 for (i=0; i<8; i++){
                     checkForPossibleWin(...rows[i],"x");
                     console.log("checking for user win" + i);
@@ -269,6 +291,7 @@ window.onload = function() {
 
             }
             
+            //function to check certain scenerios of 3 filled
             function checkScenerio(ctx1, ctx2){
                 if (emptyContexts.length ===6 && contexts[5].filledBy ==="y" && contexts[ctx1].filledBy === "x" && contexts[ctx2].filledBy ==="x"){
                     return true;
@@ -315,7 +338,8 @@ window.onload = function() {
 
                         console.log("opt 12");
                 } else{
-                        alert("game over"); 
+                   alert("It's a draw!");
+                setTimeout(location.reload(), 500);
                 }
                 turn="x";
                    
